@@ -1,0 +1,30 @@
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+.col-centered{
+    margin-left: 30%;
+}
+.remarks {
+    margin: 5px;
+    padding: 5px;
+}
+.calc {
+    margin-left: 1%;
+    margin-top: 1%;
+    padding: 5px;
+    width: 98%;
+    border : 1px solid black;
+    border-radius: 15px;
+}

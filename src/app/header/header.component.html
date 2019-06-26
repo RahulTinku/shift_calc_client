@@ -1,0 +1,17 @@
+<header id="header" class="header"> <!-- <i class="fas fa-home"></i> -->
+	<div class="row">
+		<div class="col-md-1">
+			<button (click)="home()" class="btn btn-primary-outline">
+				<img src="./assets/home.png" class="home" alt="">
+			</button>
+		</div>
+    	<div class="col-md-10 center">
+    		<h4 align="center" class="heading">{{ title }}</h4>
+    	</div>
+    	<div class="col-md-1">
+    		<button type="button" class="btn btn-primary-outline" (click)="logout()">
+    			<img src="./assets/logout.png" class="logout" alt="">
+    		</button>
+    	</div>
+	</div>
+</header>

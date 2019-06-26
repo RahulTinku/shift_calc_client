@@ -1,0 +1,129 @@
+<app-header></app-header>
+<div class="contanier-fluid shadow p-3 mb-5 bg-white rounded">
+	<accordion>
+		<accordion-group heading="Employee Information" [isOpen]="true">
+		    <ul class="list-group list-group-horizontal" *ngIf="isEmpDataAvaiable">
+		  		<li class="list-group-item">{{employee.address}}</li>
+		  		<li class="list-group-item">{{employee.phone}}</li>
+		  		<li class="list-group-item">{{employee.email}}</li>
+			</ul>
+		</accordion-group>
+		<accordion-group heading="Change Shift">
+			<div class="col-xs-12 col-12 col-md-10 form-group form-inline">
+				<button type="button" (click)="changeShift()" 
+		      		class="btn btn-primary">Change Shift</button>
+				<span class="remarks"></span>
+				<input type="text"
+				        class="form-control"
+				        placeholder="**/**/****" 
+				        [minDate]="minDate"
+				        [bsConfig]="bsConfig"
+				        bsDatepicker [(bsValue)]="shift_change_date">
+				<span class="remarks"></span>
+				<div class="form-group">
+				    <label for="shifts">Shifts</label>
+				    <select class="form-control"  [(ngModel)]="shiftChanged" >
+				     <option>Normal</option>
+				     <option>Morning</option>
+				     <option>Day</option>
+				     <option>Evening</option>
+				     <option>Night</option>
+				     <option>On-Call</option>
+				    </select>
+				</div>
+				<span class="remarks"></span>
+		      	<div>
+			      	<div *ngIf="shiftChangeError" class="alert alert-danger">
+				       <strong>Already assigned shift once on same day</strong>
+				    </div>
+				    <div *ngIf="changeShiftInWeekend" class="alert alert-danger">
+				       <strong>Changing shift in weekend is not permitted</strong>
+				    </div>
+				    <div *ngIf="sameShift" class="alert alert-danger">
+				       <strong>Already in same shift</strong>
+				    </div>
+				    <div *ngIf="noDateSelected" class="alert alert-danger">
+				       <p><strong>Error!!</strong> No Date Selected</p>
+				    </div>
+				</div>
+			</div>
+		</accordion-group>
+		<accordion-group heading="Mark Absent">
+			<div class="col-xs-12 col-12 col-md-10 form-group form-inline">
+				 <button type="button" (click)="markAbsent()" 
+		      		class="btn btn-primary">Mark Absent</button>
+				<span class="remarks"></span>
+		    	<input type="text"
+			        class="form-control"
+			        [minDate]="minDate"
+			        [bsConfig]="bsConfig"
+			        bsDatepicker [(bsValue)]="myDateValue">
+			    <span class="remarks"></span>
+			    <input type="text" 
+			    class="form-control" 
+			    [(ngModel)]="remarks"
+			    placeholder="Remarks">			   
+		      	<div *ngIf="errorMessage" class="alert alert-danger">
+			       <strong>Already absent on this date</strong>
+			    </div>
+			    <div *ngIf="markAbsentInWeekend" class="alert alert-danger">
+			       <strong>Marking absent in weekend not allowed</strong>
+			    </div>
+		    </div>
+		</accordion-group>
+		<accordion-group heading="Calculate Allowances">
+		    <div class="row">
+		    	<div *ngIf="errorCal" class="alert alert-danger" role="alert">
+				  Select a date Range
+				</div>
+			    <div class="col-md-12 form-group form-inline">
+			    	<button type="button" (click)="calculate()" 
+  						class="btn btn-primary">Calculate</button>
+  					<span class="remarks"></span>
+			    	<input type="text"
+			           placeholder="Daterangepicker"
+			           class="form-control"
+			           [minDate]="minDate"
+			           bsDaterangepicker
+			           [bsConfig]="bsConfig"
+			           placement="right"
+			           [(bsValue)]="rangePicker">
+			    </div>
+				<div class="col-xs-12 col-12 col-md-12 form-group" *ngIf="noOfDays">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>No Of Days</th>
+								<th>No Of Absent Days</th>
+								<th *ngIf="shiftWithAllowance.length == 0">Allowance per day</th>
+								<th>Allowance</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let d of shiftWithAllowance; let i=index">
+								<td>{{i+1}}</td>
+								<td>{{d.workingDays}}</td>
+								<td>{{d.absentDays}}</td>
+								<td>{{d.amount}}</td>
+							</tr>
+						</tbody>
+						<tfoot>
+						    <tr>
+						      <th>Total</th>
+						      <td>{{noOfDays}}</td>
+						      <td>{{absentDays}}</td>
+						      <td *ngIf="shiftWithAllowance.length == 0">{{allowance_amount}}</td>
+						      <td>{{totalAllowance}}</td>
+						    </tr>
+						</tfoot>
+					</table>
+				</div>
+				<div *ngIf="noCalculate" class="alert alert-danger">
+			       <strong>No data found</strong>
+			    </div>
+			</div>
+		</accordion-group>
+		
+	</accordion>
+</div>

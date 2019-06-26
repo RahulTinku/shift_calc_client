@@ -1,0 +1,62 @@
+.header {
+	background-color: #00b7ef;
+	height: 60px;
+}
+.home {
+	width: 60px;
+	height: 35px;
+}
+.logout{
+	width: 35px;
+	height: 33px;	
+}
+.heading{
+	margin-top: 10px;
+	font-family : "Karla", Sans-serif;
+	font-weight: 600;
+	color: white;
+	font-size: 28px;
+}
+
+
+/* 
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  	.col-md-1{
+  		width: 20%
+  	}
+  	.col-md-10{
+  		width: 60%
+  	}
+}
+
+/* 
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) { 
+  	.col-md-1{
+  		width: 20%
+  	}
+  	.col-md-10{
+  		width: 60%
+  	}
+}
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) { 
+  	.col-md-1{
+  		width: 20%
+  	}
+  	.col-md-10{
+  		width: 60%
+  	}
+}

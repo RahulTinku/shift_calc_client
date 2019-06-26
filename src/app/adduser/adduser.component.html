@@ -1,0 +1,125 @@
+<app-header></app-header>
+<div class="contanier-fluid userInfo shadow p-3 mb-5 bg-white rounded">
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" role="form">
+    <div class="form-group">
+      <label for="name" class="control-label required">Name</label>
+      <input type="text" class="form-control" [ngClass]="{'is-invalid' : userForm.get('name').errors && 
+    (userForm.get('name').touched || userForm.get('name').dirty)}" id="name" placeholder="Name" formControlName="name">
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlInput2">Email address</label>
+      <input type="email" class="form-control" formControlName="email" [ngClass]="{'is-invalid' : userForm.get('email').errors && 
+    (userForm.get('email').touched || userForm.get('email').dirty)}"  placeholder="name@example.com">
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input type="tel" class="form-control" formControlName="phone" [ngClass]="{'is-invalid' : userForm.get('phone').errors && 
+    (userForm.get('phone').touched || userForm.get('phone').dirty)}" placeholder="9191919191" pattern="[0-9]{10}">
+    </div>
+    <div class="form-group">
+      <label for="phone">Joining Date</label>
+      <input type="text"
+                class="form-control"
+                formControlName="join_date"
+                [ngClass]="{'is-invalid' : userForm.get('join_date').errors && 
+    (userForm.get('join_date').touched || userForm.get('join_date').dirty)}"
+                [bsConfig]="bsConfig"
+                bsDatepicker [(bsValue)]="joinDate">
+    </div>
+    <div class="form-group">
+      <label for="manager">Manager</label>
+      <select class="form-control" formControlName="manager" [ngClass]="{'is-invalid' : userForm.get('manager').errors && 
+        (userForm.get('manager').touched || userForm.get('manager').dirty)}" >
+        <option *ngFor="let m of managers" [value]="m.name" >{{m.name}}</option>
+      </select>
+    </div>
+<!--     <div class="form-group">
+      <label for="manager">Manager</label>
+      <input type="text" class="form-control" formControlName="manager" [ngClass]="{'is-invalid' : userForm.get('manager').errors && 
+    (userForm.get('manager').touched || userForm.get('manager').dirty)}"  placeholder="Manager Name">
+    </div> -->
+
+    <fieldset class="form-group">
+    <div class="row" >
+      <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
+      <div class="col-sm-10">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" formControlName="gender" id="male" value="male" checked>
+          <label class="form-check-label" for="male">
+            Male
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" formControlName="gender"  id="female" value="female">
+          <label class="form-check-label" for="female">
+            Female
+          </label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="form-group">
+    <label for="shifts">Shifts</label>
+    <select class="form-control" [ngClass]="{'is-invalid' : userForm.get('shift').errors && 
+    (userForm.get('shift').touched || userForm.get('shift').dirty)}" formControlName="shift" >
+      <option>Normal</option>
+      <option>Morning</option>
+      <option>Day</option>
+      <option>Evening</option>
+      <option>Night</option>
+      <option>On-Call</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="team">Team</label>
+    <select class="form-control" [ngClass]="{'is-invalid' : userForm.get('team').errors && 
+    (userForm.get('team').touched || userForm.get('team').dirty)}" formControlName="team" >
+      <option>A</option>
+      <option>B</option>
+      <option>C</option>
+      <option>D</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="type">Type</label>
+    <select class="form-control" [ngClass]="{'is-invalid' : userForm.get('phone').errors && 
+    (userForm.get('phone').touched || userForm.get('phone').dirty)}" formControlName="emp_type" >
+<!--       <option>Manager</option>
+      <option>Supervisor</option> -->
+      <option>Individual</option>
+    </select>
+  </div>
+<!--     <div class="form-group">
+      <label for="exampleFormControlSelect2">Example multiple select</label>
+      <select multiple class="form-control" id="exampleFormControlSelect2">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
+    </div> -->
+    <div class="form-group">
+      <label for="address">Complete Address</label>
+      <textarea class="form-control" formControlName="address" [ngClass]="{'is-invalid' : userForm.get('address').errors && 
+    (userForm.get('address').touched || userForm.get('address').dirty)}" rows="3"></textarea>
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <button type="submit" class="btn btn-primary">Add New Employee</button>
+      </div>
+    </div>
+    <div>
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        <strong>Please fill all the fields correctly</strong>
+      </div>
+      <div *ngIf="duplicate" class="alert alert-danger">
+        <strong>Duplicate User</strong>
+      </div>
+      <div *ngIf="addeduser" class="alert alert-success">
+        <strong>Success!</strong>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,53 @@
+.showDiv {
+	border: 1px solid black;
+}
+.profile {
+	margin-left: 2px;
+  cursor: pointer;
+}
+.profile_image {
+	padding: 2px;
+}
+.cal {
+	float: right;
+}
+thead>tr>th {
+    cursor: pointer;
+}
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+hr {
+  border: .5px solid blue;
+  border-radius: 1px;
+  width: 100%;
+}
+/*ul > li {
+  border-bottom: 1px black solid;
+  padding-top: 12px;
+  width: 100%%;
+}*//*
+.navbar-nav > li {
+  float: left;
+  position: relative;
+}
+.navbar-light .navbar-nav .active a::after {
+  border-bottom: 5px solid #5bc0eb;
+  bottom: -10px;
+  content: " ";
+  left: 0;
+  position: absolute;
+  right: 0;
+}*/

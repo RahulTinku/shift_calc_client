@@ -1,0 +1,12 @@
+.showDiv {
+	border: 1px solid black;
+}
+
+.remarks {
+	margin: 5px;
+	padding: 5px;
+}
+hr {
+  border: 1px solid green;
+  border-radius: 5px;
+}

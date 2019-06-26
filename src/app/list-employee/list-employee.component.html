@@ -1,0 +1,121 @@
+<app-header></app-header>
+<div class="contanier-fluid shadow p-3 mb-5 bg-white rounded">
+	<button class="btn btn-primary" disabled *ngIf="loading">
+		<span class="spinner-border spinner-border-sm"></span>
+		Loading..
+	</button>
+	<div class="row" *ngIf="!loading">
+		<div class="col-md-3">
+			<div class="card profile" (click)="gotoList()">
+			  <!-- <img src="./assets/profile.jpg" class="card-img-top profile_image" alt="..."> -->
+			  <div class="card-body" *ngIf="isEmployeeDisplayed">
+			    <p class="card-text">Hello {{thisEmployeeData.name}}</p>
+			  </div>
+			</div>
+			<nav>
+			  <!-- Links -->
+			  <ul class="list-group list-group-flush">
+			    <li class="list-group-item list-group-item-action">
+			      <button class="btn btn-primary-outline" (click)="addemployee()">Add New Employee</button>
+			    </li>
+			    <li class="list-group-item list-group-item-action" *ngIf="showAddUsers">
+			      <button class="btn btn-primary-outline" (click)="addUser()">Add New Manager/Supervisor</button>
+			    </li>
+			    <li class="list-group-item list-group-item-action">
+			      <button class="btn btn-primary-outline" (click)="calulateAll()">Calculate For All</button>
+			    </li>
+			    <li class="list-group-item list-group-item-action">
+			      <button class="btn btn-primary-outline" (click)="changePassword()">Change Password</button>
+			    </li>
+			  </ul>
+			</nav>
+		</div>
+		<div class="col-md-9" *ngIf="!isChangePassword">
+			<div class="table-responsive">
+				<div *ngIf="noUser" class="alert alert-danger">
+			        <strong>No Employee listed</strong>
+			    </div>
+			    <div *ngIf="serverError" class="alert alert-danger">
+			        <strong>Server Error</strong>
+			    </div>
+			    <div *ngIf="isEmployeeDisplayed">
+				<div class="form-group has-search">
+				    <span class="fa fa-search form-control-feedback"></span>
+				    <input type="text" class="form-control" placeholder="Search" name="search" [(ngModel)]="filter">
+				</div>
+			    <table class="table table-striped">
+				    <thead>
+				        <tr>
+				        	<th>#</th>
+				          <th (click)="sort('name')">Name
+				          	<span *ngIf="key =='name'" [ngClass]="[reverse ? 'fas fa-angle-double-down' : 'fas fa-angle-double-up']"></span>
+				          </th>
+				        </tr>
+				    </thead>
+				    <tbody>
+				    	<tr *ngFor="let l of finalList| orderBy: key : reverse| filter:filter| paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+				    		<td>{{i+1}}</td>
+				    		<td (click)="goToUser(l._id)">{{l.name}}</td>
+				    	</tr>
+				    </tbody>
+				</table>
+				<pagination-controls (pageChange)="p = $event"></pagination-controls>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-9" *ngIf="isChangePassword">
+			<div class="contanier-fluid userInfo shadow p-3 mb-5 bg-white rounded">
+			  <form [formGroup]="changePasswordform" (ngSubmit)="onSubmit()" role="form">
+			    <div class="form-group">
+			      <label for="current" class="control-label required">Current Password</label>
+			      <input type="text" class="form-control" [ngClass]="{'is-invalid' : changePasswordform.get('current').errors && 
+			    (changePasswordform.get('current').touched || changePasswordform.get('current').dirty)}" id="current" placeholder="Current Password" formControlName="current">
+			    </div>
+			    <div class="form-group">
+			      <label for="newPassword" class="control-label required">New Password</label>
+			      <input type="password" class="form-control" formControlName="newPassword" [ngClass]="{'is-invalid' : changePasswordform.get('newPassword').errors && 
+			    (changePasswordform.get('newPassword').touched || changePasswordform.get('newPassword').dirty)}"  placeholder="New Password">
+			    </div>
+			    <div class="form-group">
+			      <label for="reenter" class="control-label required">Re-enter Password</label>
+			      <input type="text" class="form-control" formControlName="reenter" [ngClass]="{'is-invalid' : changePasswordform.get('reenter').errors && 
+			    (changePasswordform.get('reenter').touched || changePasswordform.get('reenter').dirty)}" placeholder="Re-enter Password">
+			    </div>
+			    <div class="form-group row">
+			     	<div class="col-sm-10">
+			        	<button type="submit" class="btn btn-primary">Change Password</button>
+			    	</div>
+			    </div>
+			    <div>
+			      <div *ngIf="errorMessage" class="alert alert-danger">
+			        <strong>Please fill all the fields correctly</strong>
+			      </div>
+			      <div *ngIf="wrongCurrentPassword" class="alert alert-danger">
+			        <strong>Current password is incorrect</strong>
+			      </div>
+			      <div *ngIf="success" class="alert alert-success">
+			        <p><strong>Success!</strong>You will be redirect to Login</p>
+			      </div>
+			      <div *ngIf="ismatchPasswordWrong" class="alert alert-warning">
+			        <strong>Password Doesn't Match</strong>
+			      </div>
+			      <div *ngIf="isSamePassword" class="alert alert-warning">
+			        <strong>Old Password can't be same as New Password</strong>
+			      </div>
+			    </div>
+			  </form>
+			</div>
+		</div>
+		<!-- <div class="col-md-2 showDiv">
+			<div class="form-group">
+				<button type="button" class="btn btn-primary" (click)="addemployee()">Add New Individual Employee</button>
+			</div>
+			<div class="form-group" *ngIf="showAddUsers">
+				<button type="button" class="btn btn-light" (click)="addUser()">Add New Manager/Supervisor</button>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-primary" (click)="calulateAll()">Calculate For All</button>
+			</div>
+		</div> -->
+	</div>
+</div>
