@@ -5,17 +5,19 @@
 </button>
 <div class="contanier-fluid calc shadow p-3 mb-5 bg-white rounded" *ngIf="!loading">
 	<div class="row">
-	    <div class="col-lg-4 col-lg-offset-4 col-centered">
+	    <div class="col-lg-5 col-lg-offset-5">
 	    	<div class="input-group">
-	    	<input type="text"
-	           placeholder="Daterangepicker"
-	           class="form-control"
-	           bsDaterangepicker
-	           [bsConfig]="bsConfig"
-	           [(bsValue)]="rangePicker">
-		    <span class="remarks"></span>
-	    	<button type="button" (click)="calculate()" 
-		      		class="btn btn-success">Calculate</button>
+	    		<label for="Date">Please select a date range</label>
+			    <span class="remarks"></span>
+		    	<input type="text"
+		           placeholder="Daterangepicker"
+		           class="form-control"
+		           bsDaterangepicker
+		           [bsConfig]="bsConfig"
+		           [(bsValue)]="rangePicker">
+			    <span class="remarks"></span>
+		    	<button type="button" (click)="calculate()" 
+			      		class="btn btn-success">Calculate</button>
 		    </div>
 	    </div>
 	</div>

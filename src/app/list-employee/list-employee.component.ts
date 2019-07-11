@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ListEmployeeService } from './list-employee.service';
 import { CommonService } from '../common/commonService';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { _ } from 'underscore';
 
 @Component({
   selector: 'app-list-employee',
@@ -12,6 +13,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 export class ListEmployeeComponent implements OnInit {
 	list : any = [];
   finalList : any =[];
+  sortedList : any = [];
 	employeeData : any;
   thisEmployeeData : any;
 	attendanceData : any;
@@ -48,6 +50,7 @@ export class ListEmployeeComponent implements OnInit {
     this.loading = true;
     this.serverError = false;
     this.finalList.length = 0;
+    this.sortedList.length = 0;
     this.emp_id = this.route.snapshot.paramMap.get('id');
     this._common.setEmpId(this.emp_id);
     this.clearForm();
@@ -86,6 +89,10 @@ export class ListEmployeeComponent implements OnInit {
                   if(res && res.length !== 0){
                     res.map((emp, index) => {
                       this.finalList.push(emp);
+                      if((index + 1) === res.length){
+                        this.sortedList = _.clone(_.sortBy(this.finalList, 'name'));
+                        console.log(this.sortedList);
+                      }
                     })
                   }
                 })
@@ -100,7 +107,6 @@ export class ListEmployeeComponent implements OnInit {
             this.router.navigate(['/']);
           }
         })
-    //console.log(this.finalList)
   }
 
   clearForm(){
@@ -141,8 +147,8 @@ export class ListEmployeeComponent implements OnInit {
 
   calulateAll(){
     this.isChangePassword = false;
-  	//console.log(this.list);
-  	this._common.setData(this.finalList);
+  	//console.log(this.sortedList);
+  	this._common.setData(this.sortedList);
   	this.router.navigate(['calculate']);
   }
 
@@ -165,7 +171,7 @@ export class ListEmployeeComponent implements OnInit {
     this.wrongCurrentPassword = false;
     this.success = false;
       if(this.changePasswordform.valid) {
-        let password = Object.assign( {}, this.changePasswordform.value);
+        let password = _.clone(this.changePasswordform.value);
         if(password.current == password.newPassword){
           this.isSamePassword = true;
         }else{
@@ -196,5 +202,14 @@ export class ListEmployeeComponent implements OnInit {
   }
   gotoList() {
     this.isChangePassword = false;
+  }
+
+  navigationButton(){
+    var x = document.getElementById("myLinks");
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+    }
   }
 }

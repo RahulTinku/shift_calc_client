@@ -4,7 +4,7 @@ import { CommonService } from '../common/commonService';
 import { AdduserService } from './adduser.service';
 import { EmployeeService } from '../employee/employee.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import _ from 'underscore';
+import { _ } from 'underscore';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
@@ -33,7 +33,7 @@ export class AdduserComponent implements OnInit {
   	private commonService : CommonService,
   	private adduserService : AdduserService,
   	private empService : EmployeeService) { 
-  	this.bsConfig = Object.assign({}, { containerClass: this.colorTheme, showWeekNumbers : false });
+  	this.bsConfig = { containerClass: this.colorTheme, showWeekNumbers : false };
   }
 
   ngOnInit() {
@@ -79,7 +79,7 @@ export class AdduserComponent implements OnInit {
   	let self = this;
   	
   	if(this.userForm.valid) {
-  		let user = Object.assign( {}, this.userForm.value);
+  		let user = _.clone(this.userForm.value);
 	  	let shiftId = this.shifts.filter((item) => {
 	  		if(user.shift === item.name){
 	  			return item._id;

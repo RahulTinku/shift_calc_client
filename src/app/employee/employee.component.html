@@ -2,7 +2,8 @@
 <div class="contanier-fluid shadow p-3 mb-5 bg-white rounded">
 	<accordion>
 		<accordion-group heading="Employee Information" [isOpen]="true">
-		    <ul class="list-group list-group-horizontal" *ngIf="isEmpDataAvaiable">
+		    <ul class="list-group" *ngIf="isEmpDataAvaiable">
+		  		<li class="list-group-item">{{employee.name}}</li>
 		  		<li class="list-group-item">{{employee.address}}</li>
 		  		<li class="list-group-item">{{employee.phone}}</li>
 		  		<li class="list-group-item">{{employee.email}}</li>
@@ -10,8 +11,7 @@
 		</accordion-group>
 		<accordion-group heading="Change Shift">
 			<div class="col-xs-12 col-12 col-md-10 form-group form-inline">
-				<button type="button" (click)="changeShift()" 
-		      		class="btn btn-primary">Change Shift</button>
+				<label for="Date">Date</label>
 				<span class="remarks"></span>
 				<input type="text"
 				        class="form-control"
@@ -32,6 +32,9 @@
 				    </select>
 				</div>
 				<span class="remarks"></span>
+				<button type="button" (click)="changeShift()" 
+		      		class="btn btn-primary">Submit</button>
+				<span class="remarks"></span>
 		      	<div>
 			      	<div *ngIf="shiftChangeError" class="alert alert-danger">
 				       <strong>Already assigned shift once on same day</strong>
@@ -50,8 +53,7 @@
 		</accordion-group>
 		<accordion-group heading="Mark Absent">
 			<div class="col-xs-12 col-12 col-md-10 form-group form-inline">
-				 <button type="button" (click)="markAbsent()" 
-		      		class="btn btn-primary">Mark Absent</button>
+				<label for="Date">Date</label>
 				<span class="remarks"></span>
 		    	<input type="text"
 			        class="form-control"
@@ -62,7 +64,10 @@
 			    <input type="text" 
 			    class="form-control" 
 			    [(ngModel)]="remarks"
-			    placeholder="Remarks">			   
+			    placeholder="Remarks">	
+			    <span class="remarks"></span>
+			     <button type="button" (click)="markAbsent()" 
+		      		class="btn btn-primary">Submit</button>		   
 		      	<div *ngIf="errorMessage" class="alert alert-danger">
 			       <strong>Already absent on this date</strong>
 			    </div>
@@ -74,20 +79,21 @@
 		<accordion-group heading="Calculate Allowances">
 		    <div class="row">
 		    	<div *ngIf="errorCal" class="alert alert-danger" role="alert">
-				  Select a date Range
+				  Select a date range
 				</div>
 			    <div class="col-md-12 form-group form-inline">
-			    	<button type="button" (click)="calculate()" 
-  						class="btn btn-primary">Calculate</button>
-  					<span class="remarks"></span>
+			    	<label for="Date">Please select a date range</label>
+			    	<span class="remarks"></span>
 			    	<input type="text"
 			           placeholder="Daterangepicker"
 			           class="form-control"
 			           [minDate]="minDate"
 			           bsDaterangepicker
 			           [bsConfig]="bsConfig"
-			           placement="right"
 			           [(bsValue)]="rangePicker">
+			        <span class="remarks"></span>
+			        <button type="button" (click)="calculate()" 
+  						class="btn btn-primary">Calculate</button>
 			    </div>
 				<div class="col-xs-12 col-12 col-md-12 form-group" *ngIf="noOfDays">
 					<table class="table table-bordered">

@@ -37,7 +37,7 @@ export class CalculateComponent implements OnInit {
     private _empService : EmployeeService,
     private _excel : ExcelService
   	) {
-    this.bsConfig = Object.assign({}, { containerClass: this.colorTheme, showWeekNumbers : false });
+    this.bsConfig = { containerClass: this.colorTheme, showWeekNumbers : false };
     /** If there is some error return to list page*/
   	if(this._common.getData() === undefined){
         let emp_id = JSON.parse(localStorage.getItem('emp_id'));
@@ -186,14 +186,14 @@ export class CalculateComponent implements OnInit {
                   //if employee is absent on any date then reduce working days
                   if(employeeAbsent.length !== 0){
                     employeeAbsent.forEach((abs, index) => {
-                      if( new Date(dayOne) <= new Date(abs.absent_date)
-                        && new Date(dayTwo) > new Date(abs.absent_date) ){
+                      if( this._common.convertDate(dayOne) <= abs.absent_date
+                        && this._common.convertDate(dayTwo) > abs.absent_date ){
                         data.workingDays = data.workingDays - 1;
                       /** If display of absent dates are needed*/
                         //absentDate = abs.absent_date.split('/')[0] + '/' + abs.absent_date.split('/')[1];
                       }
                       //if absent date is the last day of date range
-                      if(new Date(dayTwo) === new Date(abs.absent_date) 
+                      if(this._common.convertDate(dayTwo) === abs.absent_date
                         && index === shiftToConsider.length){
                         data.workingDays = data.workingDays - 1;
                       /** If display of absent dates are needed*/
@@ -218,7 +218,7 @@ export class CalculateComponent implements OnInit {
                 } while(index <= shiftToConsider.length); // end of do while loop
               } // shift to consider length end
             } // end of get roster response check
-            //console.log('shiftToConsider :', shiftToConsider);
+            console.log('shiftToConsider :', shiftToConsider);
             //if there a shift change in between then calculate the allowance amount
             if(shiftWithAllowance.length !== 0){
               allowanceData.forEach((data, index)=> {
@@ -237,6 +237,7 @@ export class CalculateComponent implements OnInit {
             }else {
               //if there is no shift change then calculate the allowance amount
               allowanceData.forEach((al, index)=> {
+                console.log('allowance data : ', al);
                 if(al.shift_id === empData.shift_id 
                   && al.emp_type === empData.emp_type){
                   allowanceAmount = al.amount;
@@ -252,8 +253,8 @@ export class CalculateComponent implements OnInit {
             absentDays : absentDays,
             totalAllowance :totalAllowance,
           }
-          //console.log('shiftWithAllowance :', this.shiftChanges);
-          //console.log('employeeAbsent :', employeeAbsent);
+          console.log('shiftWithAllowance :', this.shiftChanges);
+          console.log('employeeAbsent :', employeeAbsent);
           //push all data in employeelist for display, this need to change once all the coloums in excel are defined
           this.shiftChanges = shiftWithAllowance;
           if(workingDaysInShift !== ''){

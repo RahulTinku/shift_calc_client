@@ -50,7 +50,7 @@ export class EmployeeComponent implements OnInit {
   	private route: ActivatedRoute,
   	private _list : ListEmployeeService,
   	private _empService : EmployeeService) {
-  		this.bsConfig = Object.assign({}, { containerClass: this.colorTheme, showWeekNumbers : false });
+  		this.bsConfig =  { containerClass: this.colorTheme, showWeekNumbers : false };
 	  	// if(this._common.getData() === undefined || this._common.getData() === null){
 	  	// 	this._route.navigate(['list']);
 	  	// }
@@ -215,13 +215,11 @@ export class EmployeeComponent implements OnInit {
 	  						if(this.employeeAbsent.length !== 0){
 		  						this.employeeAbsent.forEach((abs, index) => {
 		  							//if absent date is less than or equal to start date and less than end date of range
-		  							if( new Date(dayOne) <= new Date(abs.absent_date)
-		  								&& new Date(dayTwo) > new Date(abs.absent_date) ){
+		  							if( this._common.convertDate(dayOne) <= abs.absent_date
+		  								&& this._common.convertDate(dayTwo) > abs.absent_date ){
 		  								//data.workingDays = data.workingDays - 1;
 		  								data.absentDays++;
-		  							}
-		  							//if absent date is the last day of date range
-		  							if(new Date(dayTwo) === new Date(abs.absent_date) 
+		  							}else if(this._common.convertDate(dayTwo) === abs.absent_date //if absent date is the last day of date range
 		  								&& index === shiftToConsider.length){
 		  								//data.workingDays = data.workingDays - 1;
 		  								data.absentDays++;
@@ -243,7 +241,7 @@ export class EmployeeComponent implements OnInit {
 	  						index++;
 	  					} while(index <= shiftToConsider.length);
   					} // shift to consider length check ends here
-  					//console.log('shiftToConsider :', shiftToConsider);
+  					console.log('shiftToConsider :', shiftToConsider);
   				} // get roster response length check end
   				/**if there a shift change in between */
   				if(this.shiftWithAllowance.length !== 0){
@@ -271,8 +269,8 @@ export class EmployeeComponent implements OnInit {
 		  			//console.log(this.noOfDays, 'no of days ');
 		  			this.totalAllowance = (this.noOfDays - this.absentDays) * this.allowanceAmount;
 		  		} // shift allowance object length check ends here
-	  			//console.log('this.employeeAbsent : ', this.employeeAbsent);
-	  			//console.log('shiftWithAllowance : ', this.shiftWithAllowance);
+	  			console.log('this.employeeAbsent : ', this.employeeAbsent);
+	  			console.log('shiftWithAllowance : ', this.shiftWithAllowance);
   			}) // get roster service call ends
   		})//get attendance service call ends
   	} else {

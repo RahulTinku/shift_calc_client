@@ -5,30 +5,58 @@
 		Loading..
 	</button>
 	<div class="row" *ngIf="!loading">
-		<div class="col-md-3">
-			<div class="card profile" (click)="gotoList()">
+
+		<!-- Top Navigation Menu -->
+		<!-- <div class="topnav">
+		  <a href="#home" class="active">Logo</a> -->
+		  <!-- Navigation links (hidden by default) -->
+		 <!--  <div id="myLinks">
+		    <a href="#news">News</a>
+		    <a href="#contact">Contact</a>
+		    <a href="#about">About</a>
+		  </div> -->
+		  <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+		  <!-- <a href="javascript:void(0);" class="icon" (click)="myFunction()">
+		    <i class="fa fa-bars"></i>
+		  </a>
+		</div> -->
+
+
+
+
+		<div class="col-md-3 topnav">
+			<div class="card text-center profile" (click)="gotoList()">
 			  <!-- <img src="./assets/profile.jpg" class="card-img-top profile_image" alt="..."> -->
 			  <div class="card-body" *ngIf="isEmployeeDisplayed">
-			    <p class="card-text">Hello {{thisEmployeeData.name}}</p>
+			    <p class="card-text">
+				    <span class="bar">
+					 <a href="javascript:void(0);" class="icon" (click)="navigationButton()">
+					    <i class="fas fa-bars"></i>
+					 </a>
+					</span>
+					Hello {{thisEmployeeData.name}}
+				</p>
 			  </div>
 			</div>
-			<nav>
-			  <!-- Links -->
-			  <ul class="list-group list-group-flush">
-			    <li class="list-group-item list-group-item-action">
-			      <button class="btn btn-primary-outline" (click)="addemployee()">Add New Employee</button>
-			    </li>
-			    <li class="list-group-item list-group-item-action" *ngIf="showAddUsers">
-			      <button class="btn btn-primary-outline" (click)="addUser()">Add New Manager/Supervisor</button>
-			    </li>
-			    <li class="list-group-item list-group-item-action">
-			      <button class="btn btn-primary-outline" (click)="calulateAll()">Calculate For All</button>
-			    </li>
-			    <li class="list-group-item list-group-item-action">
-			      <button class="btn btn-primary-outline" (click)="changePassword()">Change Password</button>
-			    </li>
-			  </ul>
-			</nav>
+			<div id="myLinks" class="myLinks">
+				<nav>
+				  <!-- Links -->
+				  <ul class="list-group list-group-flush">
+				    <li class="list-group-item list-group-item-action">
+				      <button class="btn btn-primary-outline" (click)="addemployee()">Add New Employee</button>
+				    </li>
+				    <li class="list-group-item list-group-item-action" *ngIf="showAddUsers">
+				      <button class="btn btn-primary-outline" (click)="addUser()">Add New Manager/Supervisor</button>
+				    </li>
+				    <li class="list-group-item list-group-item-action">
+				      <button class="btn btn-primary-outline" (click)="calulateAll()">Calculate For All</button>
+				    </li>
+				    <li class="list-group-item list-group-item-action">
+				      <button class="btn btn-primary-outline" (click)="changePassword()">Change Password</button>
+				    </li>
+				  </ul>
+				</nav>
+			</div>
 		</div>
 		<div class="col-md-9" *ngIf="!isChangePassword">
 			<div class="table-responsive">
@@ -53,7 +81,7 @@
 				        </tr>
 				    </thead>
 				    <tbody>
-				    	<tr *ngFor="let l of finalList| orderBy: key : reverse| filter:filter| paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+				    	<tr *ngFor="let l of sortedList| orderBy: key : reverse| filter:filter| paginate: { itemsPerPage: 15, currentPage: p }; let i = index">
 				    		<td>{{i+1}}</td>
 				    		<td (click)="goToUser(l._id)">{{l.name}}</td>
 				    	</tr>
