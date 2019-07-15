@@ -89,21 +89,28 @@ export class ListEmployeeComponent implements OnInit {
           if(response && response.length !== 0){
             this.loading = true;
     				this.list = response;
-            this.list.map((item, index)=> {
-              this.finalList.push(item);
-              this._list.getList(item._id)
-                .subscribe((res) => {
-                  if(res && res.length !== 0){
-                    res.map((emp, index) => {
-                      this.finalList.push(emp);
-                      if((index + 1) === res.length){
-                        this.sortedList = _.clone(_.sortBy(this.finalList, 'name'));
-                       // console.log(this.sortedList);
-                      }
-                    })
-                  }
-                })
-            })
+            //if(this.list.length > 1){
+                this.list.map((item, index)=> {
+                this.finalList.push(item);
+                this._list.getList(item._id)
+                  .subscribe((res) => {
+                    if(res && res.length !== 0){
+                      res.map((emp, index) => {
+                        this.finalList.push(emp);
+                        if((index + 1) === res.length){
+                          this.sortedList = _.clone(_.sortBy(this.finalList, 'name'));
+                         // console.log(this.sortedList);
+                        }
+                      })
+                    }else{
+                      this.sortedList = _.clone(_.sortBy(this.finalList, 'name'));
+                    }
+                  })
+              })
+             // }else{
+             //   this.sortedList = _.clone(_.sortBy(this.list, 'name'));
+             // }
+           
             this.loading = false;
           }else{
             this.loading = false;
