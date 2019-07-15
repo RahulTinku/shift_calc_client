@@ -34,15 +34,11 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         this._router.navigate(['/list', response.emp_id]);
       }, (error) =>{
-        if(error === 'Unauthorized'){
           this.error = true;
           this.loading = false;
           setTimeout(()=>{
             this.error = false;
           }, 10000);
-        } else{
-          console.log(error);
-        }
       })
   }
 }
