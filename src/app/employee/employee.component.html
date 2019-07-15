@@ -21,7 +21,7 @@
 				        bsDatepicker [(bsValue)]="shift_change_date">
 				<span class="remarks"></span>
 				<div class="form-group">
-				    <label for="shifts">Shifts</label>
+				    <label for="shifts">Shifts</label><span class="remarks"></span>
 				    <select class="form-control"  [(ngModel)]="shiftChanged" >
 				     <option>Normal</option>
 				     <option>Morning</option>
@@ -46,7 +46,7 @@
 				       <strong>Already in same shift</strong>
 				    </div>
 				    <div *ngIf="noDateSelected" class="alert alert-danger">
-				       <p><strong>Error!!</strong> No Date Selected</p>
+				       <p><strong>Error!!</strong> No Date/Shift Selected</p>
 				    </div>
 				</div>
 			</div>
@@ -100,9 +100,9 @@
 						<thead>
 							<tr>
 								<th>#</th>
-								<th>No Of Days</th>
-								<th>No Of Absent Days</th>
-								<th *ngIf="shiftWithAllowance.length == 0">Allowance per day</th>
+								<th>No of business days</th>
+								<th>No of absent days</th>
+								<th>Allowance per day</th>
 								<th>Allowance</th>
 							</tr>
 						</thead>
@@ -112,6 +112,7 @@
 								<td>{{d.workingDays}}</td>
 								<td>{{d.absentDays}}</td>
 								<td>{{d.amount}}</td>
+								<td>{{d.totalAllowancePerDay}}</td>
 							</tr>
 						</tbody>
 						<tfoot>
@@ -119,7 +120,7 @@
 						      <th>Total</th>
 						      <td>{{noOfDays}}</td>
 						      <td>{{absentDays}}</td>
-						      <td *ngIf="shiftWithAllowance.length == 0">{{allowance_amount}}</td>
+						      <td>{{allowance_amount}}</td>
 						      <td>{{totalAllowance}}</td>
 						    </tr>
 						</tfoot>

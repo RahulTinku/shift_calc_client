@@ -62,6 +62,9 @@
 	<div *ngIf="noCalculate" class="alert alert-danger">
        <strong>No data found</strong>
     </div>
+    <div *ngIf="errorMessge" class="alert alert-danger">
+       <h6>Please <strong>calculate </strong>before downloading!!!</h6>
+    </div>
     <div class="row">
     	<div class="col-lg-4 col-lg-offset-4">
 			<p>Export as XLSX by clicking the below button</p>

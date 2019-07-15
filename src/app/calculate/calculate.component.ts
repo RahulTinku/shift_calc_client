@@ -20,6 +20,7 @@ export class CalculateComponent implements OnInit {
   calculateData : any;
   shiftChanges : any;
   noDateSelected : boolean = false;
+  errorMessge : boolean = false;
   loading : boolean = true;
   downloadableData : any = [];
   colorTheme = 'theme-blue';
@@ -47,6 +48,7 @@ export class CalculateComponent implements OnInit {
   /** Init for this page*/
   ngOnInit() {
     this.loading = true;
+    this.errorMessge = false;
   	this.employeeList = this._common.getData();
     //console.log(this.employeeList);
     //get all the allowances for calculation purpose
@@ -66,6 +68,7 @@ export class CalculateComponent implements OnInit {
     this.reverse = !this.reverse;
   }
   download() {
+    this.errorMessge = false;
     this.loading = true;
     this.downloadableData.length = 0;
     let today = new Date();
@@ -90,7 +93,7 @@ export class CalculateComponent implements OnInit {
     if(this.employeeList[0].totalAllowance){
       this.employeeList.map((item, index)=>{
         tempData = {
-          Emp_Id : item._id,
+          Emp_Id : item.employee_id,
           Name: item.name,
           Joining_Date : item.join_date,
           Manager_Name : item.manager,
@@ -106,6 +109,9 @@ export class CalculateComponent implements OnInit {
       });
       let file_name = 'shift_allowance_'+saveDate;
       this.exportAsXLSX(this.downloadableData, file_name)
+    }else{
+      this.loading = false;
+      this.errorMessge = true;
     }
   }
 
@@ -121,6 +127,7 @@ export class CalculateComponent implements OnInit {
   */
   calculate(){
     this.loading = true;
+    this.errorMessge = false;
     let dateRange = this.rangePicker;
     if(dateRange !== null && dateRange !== undefined){ /** Check date range*/
       // for each employee calculate individually
@@ -218,7 +225,7 @@ export class CalculateComponent implements OnInit {
                 } while(index <= shiftToConsider.length); // end of do while loop
               } // shift to consider length end
             } // end of get roster response check
-            console.log('shiftToConsider :', shiftToConsider);
+            //console.log('shiftToConsider :', shiftToConsider);
             //if there a shift change in between then calculate the allowance amount
             if(shiftWithAllowance.length !== 0){
               allowanceData.forEach((data, index)=> {
@@ -237,7 +244,7 @@ export class CalculateComponent implements OnInit {
             }else {
               //if there is no shift change then calculate the allowance amount
               allowanceData.forEach((al, index)=> {
-                console.log('allowance data : ', al);
+                //console.log('allowance data : ', al);
                 if(al.shift_id === empData.shift_id 
                   && al.emp_type === empData.emp_type){
                   allowanceAmount = al.amount;
@@ -253,8 +260,8 @@ export class CalculateComponent implements OnInit {
             absentDays : absentDays,
             totalAllowance :totalAllowance,
           }
-          console.log('shiftWithAllowance :', this.shiftChanges);
-          console.log('employeeAbsent :', employeeAbsent);
+          //console.log('shiftWithAllowance :', this.shiftChanges);
+          //console.log('employeeAbsent :', employeeAbsent);
           //push all data in employeelist for display, this need to change once all the coloums in excel are defined
           this.shiftChanges = shiftWithAllowance;
           if(workingDaysInShift !== ''){

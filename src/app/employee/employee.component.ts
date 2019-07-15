@@ -24,11 +24,12 @@ export class EmployeeComponent implements OnInit {
 	noOfDays : number = 0;
 	allowanceAmount : number;
 	totalAllowance : number = 0;
+	totalAllowancePerDay : number = 0;
 	errorCal : boolean = false;
 	minDate : Date;
 	shift : any;
 	shiftsDetails : any;
-	shift_change_date : Date;
+	shift_change_date : Date = new Date();
 	shiftChanged : any;
 	allowanceData : any;
 	noCalculate : boolean = false;
@@ -117,9 +118,10 @@ export class EmployeeComponent implements OnInit {
 
   changeShift() {
   	this.noDateSelected = false;
+  	//console.log(this.shiftChanged);
   	//console.log(this.shift_change_date);
   	/** If no date is seleted or no shift selected then don't do anything*/
-  	if(this.shift_change_date !== undefined && this.shiftChanged !== null){
+  	if(this.shift_change_date !== undefined && (this.shiftChanged !== null && this.shiftChanged !== undefined)){
 	  	this.shiftChangeError = false;
 	  	this.changeShiftInWeekend = false;
 	  	this.sameShift = false;
@@ -170,6 +172,7 @@ export class EmployeeComponent implements OnInit {
   	//console.log('employee current shift: ', this.employee);
   	this.noCalculate = false;
   	this.totalAllowance = 0;
+  	this.totalAllowancePerDay = 0;
   	this.shiftWithAllowance.length = 0;
   	let shiftToConsider;
   	let totalWorkingDays = 0;
@@ -241,7 +244,7 @@ export class EmployeeComponent implements OnInit {
 	  						index++;
 	  					} while(index <= shiftToConsider.length);
   					} // shift to consider length check ends here
-  					console.log('shiftToConsider :', shiftToConsider);
+  					//console.log('shiftToConsider :', shiftToConsider);
   				} // get roster response length check end
   				/**if there a shift change in between */
   				if(this.shiftWithAllowance.length !== 0){
@@ -250,6 +253,8 @@ export class EmployeeComponent implements OnInit {
 		  					if(d.shift_id === data.shift_id && d.emp_type === data.emp_type){
 		  						this.shiftWithAllowance[index].amount = data.amount;
 		  						totalWorkingDays = totalWorkingDays + this.shiftWithAllowance[index].workingDays;
+		  						this.totalAllowancePerDay = ((this.shiftWithAllowance[index].workingDays - this.shiftWithAllowance[index].absentDays) * data.amount);
+		  						this.shiftWithAllowance[index].totalAllowancePerDay = this.totalAllowancePerDay;
 		  						this.totalAllowance = this.totalAllowance + 
 		  						((this.shiftWithAllowance[index].workingDays - this.shiftWithAllowance[index].absentDays) * data.amount);
 		  						//console.log(this.totalAllowance, 'allowance');
@@ -269,8 +274,8 @@ export class EmployeeComponent implements OnInit {
 		  			//console.log(this.noOfDays, 'no of days ');
 		  			this.totalAllowance = (this.noOfDays - this.absentDays) * this.allowanceAmount;
 		  		} // shift allowance object length check ends here
-	  			console.log('this.employeeAbsent : ', this.employeeAbsent);
-	  			console.log('shiftWithAllowance : ', this.shiftWithAllowance);
+	  			//console.log('this.employeeAbsent : ', this.employeeAbsent);
+	  			//console.log('shiftWithAllowance : ', this.shiftWithAllowance);
   			}) // get roster service call ends
   		})//get attendance service call ends
   	} else {

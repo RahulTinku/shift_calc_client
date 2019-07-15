@@ -35,6 +35,8 @@ export class ListEmployeeComponent implements OnInit {
   	reverse: boolean = false;
   	//initializing p to one
   	p: number = 1;
+    itemsPerPage : number = 15;
+    currentPage : number = 1;
 
   constructor(
     private fb : FormBuilder,
@@ -43,6 +45,11 @@ export class ListEmployeeComponent implements OnInit {
   	private _list : ListEmployeeService,
   	private _common : CommonService) { }
 
+  /** For index displaying according to pagination using ngx-pagination library*/
+  absoluteIndex(indexOnPage: number): number {
+    return this.itemsPerPage * (this.currentPage - 1) + indexOnPage;
+  }
+  /** execute this on page load*/
   ngOnInit() {
     this.isChangePassword = false;
     this.showAddUsers = false;
@@ -55,7 +62,7 @@ export class ListEmployeeComponent implements OnInit {
     this._common.setEmpId(this.emp_id);
     this.clearForm();
 
-    this._list.getEmployee(this.emp_id)
+    this._list.getEmployee(this.emp_id) //get details of employee
         .subscribe((response) => {
           if(response && response.length !==0){
             this.thisEmployeeData = response;
@@ -77,7 +84,7 @@ export class ListEmployeeComponent implements OnInit {
           }
         })
 
-  	this._list.getList(this.emp_id)
+  	this._list.getList(this.emp_id) //get list of employees and sub-ordinates
   			.subscribe(response => {
           if(response && response.length !== 0){
             this.loading = true;
@@ -91,7 +98,7 @@ export class ListEmployeeComponent implements OnInit {
                       this.finalList.push(emp);
                       if((index + 1) === res.length){
                         this.sortedList = _.clone(_.sortBy(this.finalList, 'name'));
-                        console.log(this.sortedList);
+                       // console.log(this.sortedList);
                       }
                     })
                   }
@@ -108,7 +115,7 @@ export class ListEmployeeComponent implements OnInit {
           }
         })
   }
-
+  /** Clear the input form*/
   clearForm(){
     this.changePasswordform = this.fb.group({
       current : ['', Validators.required],
@@ -116,55 +123,38 @@ export class ListEmployeeComponent implements OnInit {
       reenter : ['', [Validators.required]]
     });
   }
-
+  /** Sort the list */
   sort(key){
     this.key = key;
     this.reverse = !this.reverse;
   }
-
+  /** Navigate to individual user */
   goToUser(_id) {
     this.isChangePassword = false;
     this.router.navigate(['/employee', _id]);
   }
-
-  calculate(employee){
-  	this.showCal = true;
-    this.loading = true;
-    this.isChangePassword = false;
-  	this._list.getAttendance(employee.id)
-  			.subscribe(response => {
-          this.loading = false;
-  				this.attendanceData = response;
-  				this._common.setData(response);
-  				this.router.navigate(['calculate']);
-  			}, (error)=>{
-          if(error === 'Unauthorized' || error === 'Forbidden'){
-            this.router.navigate(['/']);
-          }
-        })
-  	//console.log(employee);
-  }
-
+  /** set the data and navigate to calculate all page*/
   calulateAll(){
     this.isChangePassword = false;
   	//console.log(this.sortedList);
   	this._common.setData(this.sortedList);
   	this.router.navigate(['calculate']);
-  }
-
+  };
+  // add new user
   addUser(){
     this.isChangePassword = false;
     this.router.navigate(['/addloginuser', this.thisEmployeeData._id]);
   }
-
+  //add new employee
   addemployee(){
     this.isChangePassword = false;
   	this.router.navigate(['/adduser', this.thisEmployeeData._id]);
   }
-
+  // open change password view
   changePassword(){
     this.isChangePassword = true;
   }
+  //submit the cahgne password function
   onSubmit() {
     this.ismatchPasswordWrong = false;
     this.isSamePassword = false;
@@ -200,10 +190,11 @@ export class ListEmployeeComponent implements OnInit {
         //console.log('wrong');
       }
   }
+  //naviagate back to the lis view
   gotoList() {
     this.isChangePassword = false;
   }
-
+  // display navigation button in mobile
   navigationButton(){
     var x = document.getElementById("myLinks");
     if (x.style.display === "block") {

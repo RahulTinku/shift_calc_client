@@ -81,13 +81,13 @@
 				        </tr>
 				    </thead>
 				    <tbody>
-				    	<tr *ngFor="let l of sortedList| orderBy: key : reverse| filter:filter| paginate: { itemsPerPage: 15, currentPage: p }; let i = index">
-				    		<td>{{i+1}}</td>
+				    	<tr *ngFor="let l of sortedList| orderBy: key : reverse| filter:filter| paginate: { currentPage: currentPage, itemsPerPage: itemsPerPage }; let i = index">
+				    		<td>{{ itemsPerPage * (currentPage - 1) + (i + 1)}}</td>
 				    		<td (click)="goToUser(l._id)">{{l.name}}</td>
 				    	</tr>
 				    </tbody>
 				</table>
-				<pagination-controls (pageChange)="p = $event"></pagination-controls>
+				<pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
 				</div>
 			</div>
 		</div>

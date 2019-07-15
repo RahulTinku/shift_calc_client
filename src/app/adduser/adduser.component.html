@@ -12,6 +12,11 @@
     (userForm.get('email').touched || userForm.get('email').dirty)}"  placeholder="name@example.com">
     </div>
     <div class="form-group">
+      <label for="exampleFormControlInput2">Employee Id</label>
+      <input type="text" class="form-control" formControlName="employee_id" [ngClass]="{'is-invalid' : userForm.get('employee_id').errors && 
+    (userForm.get('employee_id').touched || userForm.get('employee_id').dirty)}">
+    </div>
+    <div class="form-group">
       <label for="phone">Phone</label>
       <input type="tel" class="form-control" formControlName="phone" [ngClass]="{'is-invalid' : userForm.get('phone').errors && 
     (userForm.get('phone').touched || userForm.get('phone').dirty)}" placeholder="9191919191" pattern="[0-9]{10}">
@@ -75,10 +80,15 @@
     <label for="team">Team</label>
     <select class="form-control" [ngClass]="{'is-invalid' : userForm.get('team').errors && 
     (userForm.get('team').touched || userForm.get('team').dirty)}" formControlName="team" >
-      <option>A</option>
-      <option>B</option>
-      <option>C</option>
-      <option>D</option>
+      <option>TalentEd</option>
+      <option>PM-Student</option>
+      <option>PM-Educator</option>
+      <option>PM-Chat</option>
+      <option>TAM</option>
+      <option>Tailoring</option>
+      <option>Tiered Services</option>
+      <option>TSG</option>
+      <option>Operations</option>
     </select>
   </div>
   <div class="form-group">

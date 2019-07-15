@@ -61,6 +61,7 @@ export class AddLoginUsersComponent implements OnInit {
       password: ['', Validators.required],
       name : ['', Validators.required],
       email : ['', [Validators.email, Validators.required]],
+      employee_id : ['', Validators.required],
       phone : ['', [Validators.required, Validators.pattern]],
       join_date : [new Date(), Validators.required],
       manager : [''],
