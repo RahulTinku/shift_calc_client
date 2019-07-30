@@ -23,7 +23,10 @@
             </div>
             <input type="password" class="form-control" [(ngModel)]="password" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
           </div>
-          <button type="button" class="btn btn-primary moveLeft" (click)="login()">Submit</button>
+          <div>
+            <button type="button" class="btn btn-link btn-sm forgot" (click)="forgotPassword()">forgot password?</button>
+            <button type="button" class="btn btn-primary" (click)="login()">Submit</button>
+          </div>
           <div *ngIf="error" class="alert alert-danger">
            <strong>Incorrect Username/Password</strong>
           </div>

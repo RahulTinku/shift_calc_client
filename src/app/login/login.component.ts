@@ -41,4 +41,9 @@ export class LoginComponent implements OnInit {
           }, 10000);
       })
   }
+
+  forgotPassword(){
+    this._router.navigate(['/reset']);
+    console.log('forgot your password');
+  }
 }

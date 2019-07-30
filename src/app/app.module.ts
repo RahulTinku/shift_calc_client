@@ -27,6 +27,7 @@ import { Ng2OrderModule } from 'ng2-order-pipe';
 import { NgxPaginationModule} from 'ngx-pagination';
 import { AddLoginUsersComponent } from './add-login-users/add-login-users.component';
 import { HeaderComponent } from './header/header.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { HeaderComponent } from './header/header.component';
     CalculateComponent,
     AdduserComponent,
     AddLoginUsersComponent,
-    HeaderComponent
+    HeaderComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

@@ -6,11 +6,15 @@ import { EmployeeComponent } from '../employee/employee.component';
 import { CalculateComponent } from '../calculate/calculate.component';
 import { AdduserComponent } from '../adduser/adduser.component';
 import { AddLoginUsersComponent } from '../add-login-users/add-login-users.component';
+import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 
 const appRoutes : Routes = [
 		{
 			path : 'login',
 			component : LoginComponent
+		}, {
+			path : 'reset',
+			component : ResetPasswordComponent
 		}, {
 			path: 'list/:id',
 			component: ListEmployeeComponent
