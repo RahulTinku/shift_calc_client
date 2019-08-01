@@ -46,7 +46,7 @@
 		        </tr>
 		    </thead>
 		    <tbody>
-		    	<tr *ngFor="let l of employeeList| orderBy: key : reverse| filter:filter| paginate: { itemsPerPage: 20, currentPage: p }; let i = index">
+		    	<tr *ngFor="let l of employeeList| orderBy: key : reverse| filter:filter| paginate: { itemsPerPage: 50, currentPage: p }; let i = index">
 		    		<td>{{i+1}}</td>
 		    		<td>{{l.name}}</td>
 		    		<td>{{l.absentDays}}</td>

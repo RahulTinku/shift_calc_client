@@ -74,16 +74,18 @@
 			    <table class="table table-striped">
 				    <thead>
 				        <tr>
-				        	<th>#</th>
+				          <th>#</th>
 				          <th (click)="sort('name')">Name
 				          	<span *ngIf="key =='name'" [ngClass]="[reverse ? 'fas fa-angle-double-down' : 'fas fa-angle-double-up']"></span>
 				          </th>
+				          <th>Current Shift</th>
 				        </tr>
 				    </thead>
 				    <tbody>
 				    	<tr *ngFor="let l of sortedList| orderBy: key : reverse| filter:filter| paginate: { currentPage: currentPage, itemsPerPage: itemsPerPage }; let i = index">
 				    		<td>{{ itemsPerPage * (currentPage - 1) + (i + 1)}}</td>
 				    		<td (click)="goToUser(l._id)">{{l.name}}</td>
+				    		<td>{{l.shift}}</td>
 				    	</tr>
 				    </tbody>
 				</table>
@@ -96,7 +98,7 @@
 			  <form [formGroup]="changePasswordform" (ngSubmit)="onSubmit()" role="form">
 			    <div class="form-group">
 			      <label for="current" class="control-label required">Current Password</label>
-			      <input type="text" class="form-control" [ngClass]="{'is-invalid' : changePasswordform.get('current').errors && 
+			      <input type="password" class="form-control" [ngClass]="{'is-invalid' : changePasswordform.get('current').errors && 
 			    (changePasswordform.get('current').touched || changePasswordform.get('current').dirty)}" id="current" placeholder="Current Password" formControlName="current">
 			    </div>
 			    <div class="form-group">
@@ -106,7 +108,7 @@
 			    </div>
 			    <div class="form-group">
 			      <label for="reenter" class="control-label required">Re-enter Password</label>
-			      <input type="text" class="form-control" formControlName="reenter" [ngClass]="{'is-invalid' : changePasswordform.get('reenter').errors && 
+			      <input type="password" class="form-control" formControlName="reenter" [ngClass]="{'is-invalid' : changePasswordform.get('reenter').errors && 
 			    (changePasswordform.get('reenter').touched || changePasswordform.get('reenter').dirty)}" placeholder="Re-enter Password">
 			    </div>
 			    <div class="form-group row">

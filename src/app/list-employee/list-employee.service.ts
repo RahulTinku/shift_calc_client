@@ -20,7 +20,7 @@ export class ListEmployeeService {
     'Authorization' : 'Bearer ' + JSON.parse(localStorage.getItem('token'))
 	});
 	const options = new RequestOptions({headers: headers});
-  	return this._http.get(this.baseUrl+`api/employeeList/${manager_id}`, options)
+  	return this._http.get(this.baseUrl+`api/completeList/${manager_id}`, options)
   		.map((res:any) => res.json())
   		.catch(this.HandleError)
   }
