@@ -98,6 +98,7 @@ export class AddLoginUsersComponent implements OnInit {
           }
         })
         user.manager_id = manager_id[0].emp_id;
+        user.join_date = this.commonService.convertDate(user.join_date);
       }
 
       this.adduserService.addLogin(user)

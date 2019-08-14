@@ -30,6 +30,8 @@ export class CalculateComponent implements OnInit {
   reverse: boolean = false;
   //initializing p to one
   p: number = 1;
+  itemsPerPage : number = 50;
+  currentPage : number = 1;
 
   constructor(
   	private _common:CommonService,
@@ -44,6 +46,10 @@ export class CalculateComponent implements OnInit {
         let emp_id = JSON.parse(localStorage.getItem('emp_id'));
 	  		this._route.navigate(['/list', emp_id]);
 	  	}
+  }
+  /** For index displaying according to pagination using ngx-pagination library*/
+  absoluteIndex(indexOnPage: number): number {
+    return this.itemsPerPage * (this.currentPage - 1) + indexOnPage;
   }
   /** Init for this page*/
   ngOnInit() {
@@ -158,6 +164,7 @@ export class CalculateComponent implements OnInit {
       this._empService.getAttendance(empData._id, dateRange)
         .subscribe((res) => {
           employeeAbsent = res;
+          //console.log('absent :', res)
           absentDays = employeeAbsent.length;
         //getting roster for shift change
         this._empService.getRoster(empData._id)
@@ -165,11 +172,15 @@ export class CalculateComponent implements OnInit {
             if(response && response.length !== 0){
               shiftToConsider = response.filter((shift_id, index) => {
                 //if effective date is less than or greater than selected date range then ignore
+                //console.log('emp ',emp)
+                //console.log('start date ',dateRange[0])
+                //console.log('shift change ',shift_id.changed_from)
                 if(new Date(dateRange[0])  <= new Date(shift_id.changed_from)
                   && new Date(dateRange[1]) >= new Date(shift_id.changed_from)){
                   return shift_id;
                 }
               })
+              //console.log(shiftToConsider)
               if(shiftToConsider.length !== 0){ /* if there is shift change in date range*/
                 let index = 0;
                 let dayOne;
@@ -185,22 +196,24 @@ export class CalculateComponent implements OnInit {
                     dayTwo = new Date(shiftToConsider[index].changed_from);
                   }
                   //create a data set to save in array for calculation
+
                   let data = {
                     shift_id : shiftToConsider[index] ? shiftToConsider[index].old_shift_id : empData.shift_id,
                     emp_type : shiftToConsider[index] ? shiftToConsider[index].emp_type : empData.emp_type,
                     workingDays: (index === shiftToConsider.length) ? this._common.calcBusinessDays(dayOne,dayTwo) : this._common.calcBusinessDays(dayOne,dayTwo)-1
                   }
+
                   //if employee is absent on any date then reduce working days
                   if(employeeAbsent.length !== 0){
                     employeeAbsent.forEach((abs, index) => {
-                      if( this._common.convertDate(dayOne) <= abs.absent_date
-                        && this._common.convertDate(dayTwo) > abs.absent_date ){
+                      if( dayOne <= new Date(abs.absent_date)
+                      && dayTwo > new Date(abs.absent_date )){
                         data.workingDays = data.workingDays - 1;
                       /** If display of absent dates are needed*/
                         //absentDate = abs.absent_date.split('/')[0] + '/' + abs.absent_date.split('/')[1];
                       }
                       //if absent date is the last day of date range
-                      if(this._common.convertDate(dayTwo) === abs.absent_date
+                      if(dayTwo === new Date(abs.absent_date)
                         && index === shiftToConsider.length){
                         data.workingDays = data.workingDays - 1;
                       /** If display of absent dates are needed*/
@@ -223,7 +236,37 @@ export class CalculateComponent implements OnInit {
                   //increament counter
                   index++;
                 } while(index <= shiftToConsider.length); // end of do while loop
-              } // shift to consider length end
+              }else { /** special condition when response is not null but shift to consider is calculating as null**/
+              //   if(response.length !== 0){
+              //   /** let's assume only one element in response**/
+              //   let shift_id = response[0].old_shift_id;
+              //   let dayOne = dateRange[0];
+              //   let dayTwo = dateRange[1];
+              //   let data = {
+              //     absentDays : 0,
+              //     shift_id : shift_id,
+              //     emp_type : empData.emp_type,
+              //     workingDays: this._common.calcBusinessDays(dateRange[0],dateRange[1])
+              //   }
+              //   //if employee is absent on any date then reduce working days
+              //   if(employeeAbsent.length !== 0){
+              //     employeeAbsent.forEach((abs, index) => {
+              //       //if absent date is less than or equal to start date and less than end date of range
+              //       if( this._common.convertDate(dayOne) <= abs.absent_date
+              //         && this._common.convertDate(dayTwo) > abs.absent_date ){
+              //         //data.workingDays = data.workingDays - 1;
+              //         data.absentDays++;
+              //       }else if(this._common.convertDate(dayTwo) === abs.absent_date //if absent date is the last day of date range
+              //         && index === shiftToConsider.length){
+              //         //data.workingDays = data.workingDays - 1;
+              //         data.absentDays++;
+              //       }
+              //     })
+              //   }
+              // //push data in an array for calculation
+              //   shiftWithAllowance.push(data);
+              // }  
+             } // shift to consider length end
             } // end of get roster response check
             //console.log('shiftToConsider :', shiftToConsider);
             //if there a shift change in between then calculate the allowance amount
@@ -231,6 +274,8 @@ export class CalculateComponent implements OnInit {
               allowanceData.forEach((data, index)=> {
                 shiftWithAllowance.forEach((d, index) => {
                   if(d.shift_id === data.shift_id && d.emp_type === data.emp_type){
+                  //console.log('data : ', data);
+                  //console.log('shift with allowance : ', d);
                     shiftWithAllowance[index].amount = data.amount;
                     allowancePerShift = allowancePerShift === '' ? data.amount : allowancePerShift + ' and ' + data.amount;
                     workingDaysInShift = workingDaysInShift === '' ? shiftWithAllowance[index].workingDays : workingDaysInShift + ' and ' + shiftWithAllowance[index].workingDays;

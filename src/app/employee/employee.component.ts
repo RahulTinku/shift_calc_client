@@ -71,6 +71,7 @@ export class EmployeeComponent implements OnInit {
 	this._list.getEmployee(this.emp_id)
 		.subscribe(response => {
 			this.employee = response;
+			//console.log('employee loading : ', this.employee);
 			this.minDate = new Date(this.employee.join_date);
 			this.isEmpDataAvaiable = true;
 	}, (error)=>{
@@ -134,7 +135,6 @@ export class EmployeeComponent implements OnInit {
 		  			return s._id;
 		  		}
 		  	})
-
 		  	if(this.employee.shift_id === shift[0]._id){
 		  		this.sameShift = true;
 		  	} else{
@@ -185,6 +185,7 @@ export class EmployeeComponent implements OnInit {
 		this._empService.getAttendance(this.employee._id, dateRange)
 			.subscribe((res) => {
 				this.employeeAbsent = res;
+				//console.log('absent :', res);
 				this.absentDays = this.employeeAbsent.length;
 			//getting roster for shift change
   			this._empService.getRoster(this.employee._id)
@@ -197,6 +198,7 @@ export class EmployeeComponent implements OnInit {
   							return shift_id;
   						}
   					})
+  					//console.log('shiftToConsider : ', shiftToConsider);
   					if(shiftToConsider.length !== 0){ /* if there is shift change in date range*/
 	  					let index = 0;
 	  					let dayOne;
@@ -218,11 +220,11 @@ export class EmployeeComponent implements OnInit {
 	  						if(this.employeeAbsent.length !== 0){
 		  						this.employeeAbsent.forEach((abs, index) => {
 		  							//if absent date is less than or equal to start date and less than end date of range
-		  							if( this._common.convertDate(dayOne) <= abs.absent_date
-		  								&& this._common.convertDate(dayTwo) > abs.absent_date ){
+		  							if( dayOne <= new Date(abs.absent_date)
+		  								&& dayTwo > new Date(abs.absent_date )){
 		  								//data.workingDays = data.workingDays - 1;
 		  								data.absentDays++;
-		  							}else if(this._common.convertDate(dayTwo) === abs.absent_date //if absent date is the last day of date range
+		  							}else if(dayTwo === new Date(abs.absent_date) //if absent date is the last day of date range
 		  								&& index === shiftToConsider.length){
 		  								//data.workingDays = data.workingDays - 1;
 		  								data.absentDays++;
@@ -243,6 +245,52 @@ export class EmployeeComponent implements OnInit {
 	  						//increament counter
 	  						index++;
 	  					} while(index <= shiftToConsider.length);
+  					}else {
+  					// 	if(response.length !== 0){  //response length !== 0 length check starts
+  					// 		/** let's assume only one element in response**/
+  					// 		let dayOne = dateRange[0];
+  					// 		let dayTwo = dateRange[1];
+  					// 		let shift_id = '';
+  					// 		let index = 0;
+
+  					// 		do{
+  					// 			let changedDate = new Date(response[index].changed_from);
+  					// 			let nextChangedDate = new Date(response[index +1].changed_from);
+  					// 			if(dayOne >= changedDate && dayTwo <= nextChangedDate){
+  					// 				console.log('this shift id :', response[index].old_shift_id);
+  					// 				shift_id = response[index].old_shift_id;
+  					// 			}
+  					// 			index++;
+  					// 		} while(index < (response.length -1));
+
+
+
+
+  					// 		//shift_id = response[0].old_shift_id;
+  					// 		let data = {
+	  				// 			absentDays : 0,
+	  				// 			shift_id : shift_id,
+	  				// 			emp_type : this.employee.emp_type,
+	  				// 			workingDays: this._common.calcBusinessDays(dateRange[0],dateRange[1])
+	  				// 		}
+	  				// 		//if employee is absent on any date then reduce working days
+	  				// 		if(this.employeeAbsent.length !== 0){
+		  			// 			this.employeeAbsent.forEach((abs, index) => {
+		  			// 				//if absent date is less than or equal to start date and less than end date of range
+		  			// 				if( dayOne <= new Date(abs.absent_date)
+		  			// 					&& dayTwo > new Date(abs.absent_date)){
+		  			// 					//data.workingDays = data.workingDays - 1;
+		  			// 					data.absentDays++;
+		  			// 				}else if(dayTwo === new Date(abs.absent_date) //if absent date is the last day of date range
+		  			// 					&& index === shiftToConsider.length){
+		  			// 					//data.workingDays = data.workingDays - 1;
+		  			// 					data.absentDays++;
+		  			// 				}
+		  			// 			})
+	  				// 		}
+							// //push data in an array for calculation
+	  				// 		this.shiftWithAllowance.push(data);
+  					// 	}	 //response length !== 0 length check ends
   					} // shift to consider length check ends here
   					//console.log('shiftToConsider :', shiftToConsider);
   				} // get roster response length check end
@@ -262,6 +310,7 @@ export class EmployeeComponent implements OnInit {
 		  				})
 		  			})
 		  		}else {
+		  			//console.log('allowance : ',this.employee)
 		  			//if there is no shift change
 		  			this.allowanceData.forEach((al, index)=> {
 		  				if(al.shift_id === this.employee.shift_id 
