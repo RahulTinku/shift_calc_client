@@ -180,7 +180,6 @@ export class CalculateComponent implements OnInit {
                   return shift_id;
                 }
               })
-              //console.log(shiftToConsider)
               if(shiftToConsider.length !== 0){ /* if there is shift change in date range*/
                 let index = 0;
                 let dayOne;
@@ -305,7 +304,6 @@ export class CalculateComponent implements OnInit {
             absentDays : absentDays,
             totalAllowance :totalAllowance,
           }
-          //console.log('shiftWithAllowance :', this.shiftChanges);
           //console.log('employeeAbsent :', employeeAbsent);
           //push all data in employeelist for display, this need to change once all the coloums in excel are defined
           this.shiftChanges = shiftWithAllowance;
@@ -314,7 +312,15 @@ export class CalculateComponent implements OnInit {
           }
           this.employeeList[index].absentDays = absentDate === '' ? absentDays : absentDays + '(' + absentDate + ')';
           this.employeeList[index].noOfBusineesDays = workingDaysInShift === '' ? noOfDays : noOfDays + '('+workingDaysInShift+')';
-          this.employeeList[index].allowancePerDay = allowanceAmount === 0 ? allowancePerShift : allowanceAmount;
+          /** Because allowance amount was 0 in case of normal shift and allowancePerShift was '', do nothing was comming in UI*/
+          if(allowanceAmount === 0 && allowancePerShift === ''){
+            this.employeeList[index].allowancePerDay = 0;
+          } else if(allowanceAmount === 0 && allowancePerShift !== ''){
+            this.employeeList[index].allowancePerDay = allowancePerShift
+          } else if(allowanceAmount !== 0 ){
+            this.employeeList[index].allowancePerDay = allowanceAmount;
+          }
+          //this.employeeList[index].allowancePerDay = allowanceAmount == 0 ? allowancePerShift : allowanceAmount;
           this.employeeList[index].totalAllowance = totalAllowance;
           this.loading = false;
         })//get roster service end
